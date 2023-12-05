@@ -41,9 +41,9 @@ public class BaseClass implements ITestListener {
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("----window-size=1440x600");
-//        options.addArguments("----headless");
+        options.addArguments("----headless");
+
         driver = new ChromeDriver(options);
-        driver.manage().window().maximize();
 
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
         driver.get(prop.getProperty("url"));
@@ -52,7 +52,6 @@ public class BaseClass implements ITestListener {
         System.out.println("Running the browser");
 
         return driver;
-
     }
 
     public static Properties readPropertiesFile(String fileName) throws IOException {
