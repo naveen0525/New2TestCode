@@ -26,125 +26,126 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 
 public class BaseClass implements ITestListener {
 
-	public static WebDriver driver;
-	public static ExtentSparkReporter htmlReporter;
-	public static ExtentReports report;
-	protected static ExtentTest test;
-	public static ITestResult result;
+    public static WebDriver driver;
+    public static ExtentSparkReporter htmlReporter;
+    public static ExtentReports report;
+    protected static ExtentTest test;
+    public static ITestResult result;
 
-	public WebDriver setUp() throws IOException {
+    public WebDriver setUp() throws IOException {
 
-		Properties prop = readPropertiesFile(".//src//Resources//Property//url.properties");
-		System.setProperty("webdriver.chrome.driver", ".//src//Resources//drivers//chromedriver.exe");
+        Properties prop = readPropertiesFile(".//src//Resources//Property//url.properties");
+//        System.setProperty("webdriver.chrome.driver", ".//src//Resources//drivers//chromedriver.exe");
 
-		
-		  ChromeOptions options = new ChromeOptions();
-		  options.addArguments("----window-size=1440x600");
-		  options.addArguments("----headless"); driver = new ChromeDriver(options);
-		  driver.manage().window().maximize();
-		 
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("----window-size=1440x600");
+        options.addArguments("----headless");
+        driver = new ChromeDriver(options);
+        driver.manage().window().maximize();
+
 
 //		driver = new ChromeDriver();
-		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
-		driver.get(prop.getProperty("url"));
-		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
+        driver.get(prop.getProperty("url"));
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
 //		driver.manage().window().maximize();
 
-		System.out.println("Running the browser");
+        System.out.println("Running the browser");
 
-		return driver;
+        return driver;
 
-	}
+    }
 
-	public static Properties readPropertiesFile(String fileName) throws IOException {
-		FileInputStream fis = null;
-		Properties prop = null;
-		try {
-			fis = new FileInputStream(fileName);
-			prop = new Properties();
-			prop.load(fis);
-		} catch (FileNotFoundException fnfe) {
-			fnfe.printStackTrace();
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		} finally {
-			fis.close();
-		}
-		return prop;
-	}
+    public static Properties readPropertiesFile(String fileName) throws IOException {
+        FileInputStream fis = null;
+        Properties prop = null;
+        try {
+            fis = new FileInputStream(fileName);
+            prop = new Properties();
+            prop.load(fis);
+        } catch (FileNotFoundException fnfe) {
+            fnfe.printStackTrace();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } finally {
+            fis.close();
+        }
+        return prop;
+    }
 
-	public static String scrShot(String screenShotName) {
+    public static String scrShot(String screenShotName) {
 
-		File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 
-		Date d = new Date();
+        Date d = new Date();
 
-		String TimeStamp = d.toString().replace(":", "_").replace(" ", "_");
+        String TimeStamp = d.toString().replace(":", "_").replace(" ", "_");
 
-		File Dest = new File(".//src//screenshot//" + screenShotName + "_" + TimeStamp + ".png");
-		String errflpath = Dest.getAbsolutePath();
-		try {
-			FileUtils.copyFile(scrFile, Dest);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			test.log(Status.FAIL, e);
-		}
-		return errflpath;
+        File Dest = new File(".//src//screenshot//" + screenShotName + "_" + TimeStamp + ".png");
+        String errflpath = Dest.getAbsolutePath();
+        try {
+            FileUtils.copyFile(scrFile, Dest);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            test.log(Status.FAIL, e);
+        }
+        return errflpath;
 
-	}
+    }
 
-	public void scrollPageDown() {
+    public void scrollPageDown() {
 
-		JavascriptExecutor jse = (JavascriptExecutor) driver;
-		jse.executeScript("window.scrollBy(0,250)");
+        JavascriptExecutor jse = (JavascriptExecutor) driver;
+        jse.executeScript("window.scrollBy(0,250)");
 
-	}
+    }
 
-	public void onStart(ITestContext context) {
-		// TODO Auto-generated method stub
-		htmlReporter = new ExtentSparkReporter(System.getProperty("user.dir") + "/src/reports/AventExtentReportResults.html");
-		report = new ExtentReports();
-		report.attachReporter(htmlReporter);
+    public void onStart(ITestContext context) {
+        // TODO Auto-generated method stub
+        htmlReporter = new ExtentSparkReporter(System.getProperty("user.dir") + "/src/reports/AventExtentReportResults.html");
+        report = new ExtentReports();
+        report.attachReporter(htmlReporter);
 
-	}
+    }
 
-	public void onTestSuccess(ITestResult result) {
-		// TODO Auto-generated method stub
+    public void onTestSuccess(ITestResult result) {
+        // TODO Auto-generated method stub
 
-		if (result.getStatus() == ITestResult.SUCCESS) {
-			test.log(Status.PASS, (result.getName() + " Test PASSED"));
-			report.flush();
-		}
+        if (result.getStatus() == ITestResult.SUCCESS) {
+            test.log(Status.PASS, (result.getName() + " Test PASSED"));
+            report.flush();
+        }
 
-		System.out.println("Test Pass");
-		driver.quit();
-	}
+        System.out.println("Test Pass");
+        driver.quit();
+    }
 
-	public void onTestFailure(ITestResult result) {
-		// TODO Auto-generated method stub
+    public void onTestFailure(ITestResult result) {
+        // TODO Auto-generated method stub
 
-		scrShot(result.getMethod().getMethodName());
+        scrShot(result.getMethod().getMethodName());
 
-		if (result.getStatus() == ITestResult.FAILURE) {
+        if (result.getStatus() == ITestResult.FAILURE) {
 
 //			test.log(LogStatus.FAIL, (result.getName() + " Test FAILED "));
-			String screenShot = scrShot(result.getName());
-			test.log(Status.FAIL, "Test Failed: " + test.addScreenCaptureFromPath(screenShot));
-			test.log(Status.FAIL, result.getThrowable());
-			report.flush();
+            String screenShot = scrShot(result.getName());
+            test.log(Status.FAIL, "Test Failed: " + test.addScreenCaptureFromPath(screenShot));
+            test.log(Status.FAIL, result.getThrowable());
+            report.flush();
 
-		}
+        }
 
-		System.out.println("Test Fail");
-		driver.quit();
+        System.out.println("Test Fail");
+        driver.quit();
 
-	}
+    }
 
-	public void onFinish(ITestContext context) {
-		// TODO Auto-generated method stub
-		report.flush();
+    public void onFinish(ITestContext context) {
+        // TODO Auto-generated method stub
+        report.flush();
 //		driver.close();
 
-	}
+    }
 
 }
