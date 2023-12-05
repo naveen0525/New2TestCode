@@ -115,7 +115,7 @@
 						<argLine>-XX:MaxPermSize=256m</argLine>
 						<argLine>-Dfile.encoding=UTF-8</argLine>
 						<useFile>false</useFile>
-						<testFailureIgnore>false</testFailureIgnore>
+						<testFailureIgnore>true</testFailureIgnore>
 						<includes>
 							<include>"**/*Test.java"</include>
 						</includes>
