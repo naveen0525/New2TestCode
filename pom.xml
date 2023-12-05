@@ -109,6 +109,9 @@
 						<forkCount>4</forkCount>
 						<reuseForks>false</reuseForks>
                         <forkedProcessExitTimeoutInSeconds>120</forkedProcessExitTimeoutInSeconds>
+                        <suiteXmlFiles>
+                            <suiteXmlFile>testng.xml</suiteXmlFile>
+                        </suiteXmlFiles>
                     </configuration>
                 </plugin>
                 <plugin>
