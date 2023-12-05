@@ -8,6 +8,7 @@ import java.time.Duration;
 import java.util.Date;
 import java.util.Properties;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
@@ -35,21 +36,18 @@ public class BaseClass implements ITestListener {
     public WebDriver setUp() throws IOException {
 
         Properties prop = readPropertiesFile(".//src//Resources//Property//url.properties");
-//        System.setProperty("webdriver.chrome.driver", ".//src//Resources//drivers//chromedriver.exe");
 
+		WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("----window-size=1440x600");
-        options.addArguments("----headless");
+//        options.addArguments("----headless");
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
 
-
-//		driver = new ChromeDriver();
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
         driver.get(prop.getProperty("url"));
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
-//		driver.manage().window().maximize();
 
         System.out.println("Running the browser");
 
@@ -103,7 +101,7 @@ public class BaseClass implements ITestListener {
 
     public void onStart(ITestContext context) {
         // TODO Auto-generated method stub
-        htmlReporter = new ExtentSparkReporter(System.getProperty("user.dir") + "/src/reports/AventExtentReportResults.html");
+        htmlReporter = new ExtentSparkReporter(System.getProperty("user.dir") + "/reports/AventExtentReportResults.html");
         report = new ExtentReports();
         report.attachReporter(htmlReporter);
 
