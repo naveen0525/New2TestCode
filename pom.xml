@@ -116,6 +116,9 @@
 						<argLine>-Dfile.encoding=UTF-8</argLine>
 						<useFile>false</useFile>
 						<testFailureIgnore>false</testFailureIgnore>
+						<includes>
+							<include>"**/*Test.java"</include>
+						</includes>
                         <skipTests>true</skipTests>
                     </configuration>
                 </plugin>
