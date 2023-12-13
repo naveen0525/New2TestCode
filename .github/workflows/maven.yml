@@ -28,7 +28,7 @@ jobs:
     
     - uses: browser-actions/setup-chrome@latest
     - run: chrome --version
-
+    
     - name: Build with Maven
       run: mvn -B clean test
 
@@ -36,4 +36,4 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./reports
+        publish_dir: ./src/reports
